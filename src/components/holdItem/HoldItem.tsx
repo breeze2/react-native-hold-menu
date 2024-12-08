@@ -27,7 +27,7 @@ import Animated, {
 //#region dependencies
 import { Portal } from '@gorhom/portal';
 import { nanoid } from 'nanoid/non-secure';
-import * as Haptics from 'expo-haptics';
+import { trigger } from 'react-native-haptic-feedback';
 //#endregion
 
 //#region utils & types
@@ -106,17 +106,28 @@ const HoldItemComponent = ({
     const style = !hapticFeedback ? 'Medium' : hapticFeedback;
     switch (style) {
       case `Selection`:
-        Haptics.selectionAsync();
+        // Haptics.selectionAsync();
+        trigger('selection');
         break;
       case `Light`:
+        trigger('impactLight');
+        break;
       case `Medium`:
+        trigger('impactMedium');
+        break;
       case `Heavy`:
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle[style]);
+        // Haptics.impactAsync(Haptics.ImpactFeedbackStyle[style]);
+        trigger('impactHeavy');
         break;
       case `Success`:
+        trigger('notificationSuccess');
+        break;
       case `Warning`:
+        trigger('notificationWarning');
+        break;
       case `Error`:
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType[style]);
+        // Haptics.notificationAsync(Haptics.NotificationFeedbackType[style]);
+        trigger('notificationError');
         break;
       default:
     }
@@ -405,7 +416,7 @@ const HoldItemComponent = ({
           </LongPressGestureHandler>
         );
     }
-  }, [activateOn, gestureEvent]);
+  }, [activateOn, gestureEvent, longPressMinDurationMs]);
 
   const PortalOverlay = useMemo(() => {
     return () => (
